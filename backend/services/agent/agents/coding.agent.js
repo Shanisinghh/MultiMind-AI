@@ -4,29 +4,29 @@ import { getModel } from "../utils/model.js";
 
 export const codingAgent = async (state) => {
 
-await checkAgentLimit(
+  await checkAgentLimit(
     state.userId,
     "coding"
   );
- await deductCredits(
+  await deductCredits(
 
-        state.userId,
+    state.userId,
 
-        "coding"
+    "coding"
 
-    );
+  );
 
-function cleanCode(code = "") {
-  return code
-    .replace(/```[\w-]*\n?/g, "")
-    .replace(/```/g, "")
-    .trim();
-}
+  function cleanCode(code = "") {
+    return code
+      .replace(/```[\w-]*\n?/g, "")
+      .replace(/```/g, "")
+      .trim();
+  }
 
   const llm =
     getModel("coding");
 
- const response = await llm.invoke(`You are MultiMindAI Coding Agent.
+  const response = await llm.invoke(`You are MultiMindAI Coding Agent.
 
 Your first task is to identify the user's intent.
 
@@ -245,7 +245,7 @@ ${state.prompt}`);
 
   const content =
     response.content?.trim();
-console.log(content)
+  console.log(content)
   const files = [];
 
   const matches = [
@@ -254,54 +254,54 @@ console.log(content)
     )
   ];
 
-  if(matches.length){
+  if (matches.length) {
 
     matches.forEach(match => {
 
       files.push({
-  name: match[1].trim(),
-  content: cleanCode(match[2]),
-});
+        name: match[1].trim(),
+        content: cleanCode(match[2]),
+      });
 
     });
 
-  }else{
+  } else {
 
     let fileName = "main.js";
 
     const prompt =
       state.prompt.toLowerCase();
 
-    if(prompt.includes("html")){
+    if (prompt.includes("html")) {
       fileName = "index.html";
     }
-    else if(prompt.includes("css")){
+    else if (prompt.includes("css")) {
       fileName = "style.css";
     }
-    else if(prompt.includes("python")){
+    else if (prompt.includes("python")) {
       fileName = "main.py";
     }
-    else if(prompt.includes("java")){
+    else if (prompt.includes("java")) {
       fileName = "Main.java";
     }
-    else if(prompt.includes("c++")){
+    else if (prompt.includes("c++")) {
       fileName = "main.cpp";
     }
 
-   
 
- 
+
+
 
   }
 
 
   if (!content.includes("FILE:")) {
-  return {
-    ...state,
-    response: content,
-    artifacts: []
-  };
-}
+    return {
+      ...state,
+      response: content,
+      artifacts: []
+    };
+  }
 
   return {
 
@@ -310,11 +310,11 @@ console.log(content)
     response:
       "Code generated successfully.",
 
-    artifacts:[
+    artifacts: [
       {
-        id:Date.now(),
-        type:"project",
-        title:state.prompt,
+        id: Date.now(),
+        type: "project",
+        title: state.prompt,
         files,
         createdAt:
           new Date().toISOString()

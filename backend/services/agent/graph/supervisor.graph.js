@@ -1,142 +1,142 @@
 import {
- StateGraph
+  StateGraph
 }
-from "@langchain/langgraph";
+  from "@langchain/langgraph";
 
 import {
- AgentState
+  AgentState
 }
-from "./state.js";
+  from "./state.js";
 
 import {
- routerNode
+  routerNode
 }
-from "./router.node.js";
+  from "./router.node.js";
 
 import {
- chatAgent
+  chatAgent
 }
-from "../agents/chat.agent.js";
+  from "../agents/chat.agent.js";
 
 import {
- codingAgent
+  codingAgent
 }
-from "../agents/coding.agent.js";
+  from "../agents/coding.agent.js";
 
 import {
- searchAgent
+  searchAgent
 }
-from "../agents/search.agent.js";
+  from "../agents/search.agent.js";
 
 import {
- pdfAgent
+  pdfAgent
 }
-from "../agents/pdf.agent.js";
+  from "../agents/pdf.agent.js";
 import { pptAgent } from "../agents/ppt.agent.js";
 import { imageAgent } from "../agents/imageGen.agent.js";
 import { visionAgent } from "../agents/vision.agent.js";
 import { pdfRagAgent } from "../agents/pdfRag.agent.js";
 
 const workflow =
-new StateGraph(
- AgentState
+  new StateGraph(
+    AgentState
+  );
+
+workflow.addNode(
+  "router",
+  routerNode
 );
 
 workflow.addNode(
- "router",
- routerNode
+  "chat",
+  chatAgent
 );
 
 workflow.addNode(
- "chat",
- chatAgent
+  "coding",
+  codingAgent
 );
 
 workflow.addNode(
- "coding",
- codingAgent
+  "search",
+  searchAgent
 );
 
 workflow.addNode(
- "search",
- searchAgent
-);
-
-workflow.addNode(
- "pdf",
- pdfAgent
+  "pdf",
+  pdfAgent
 );
 workflow.addNode(
- "ppt",
- pptAgent
+  "ppt",
+  pptAgent
 );
 workflow.addNode(
- "image",
- imageAgent
+  "image",
+  imageAgent
 );
 workflow.addNode(
- "vision",
- visionAgent
+  "vision",
+  visionAgent
 );
 workflow.addNode(
- "pdf_rag",
- pdfRagAgent
+  "pdf_rag",
+  pdfRagAgent
 );
 workflow.addEdge(
- "__start__",
- "router"
+  "__start__",
+  "router"
 );
 
 workflow.addConditionalEdges(
 
- "router",
+  "router",
 
- (state)=>{
+  (state) => {
 
-  switch(state.agent){
+    switch (state.agent) {
 
-   case "search":
-    return "search";
+      case "search":
+        return "search";
 
-   case "coding":
-    return "coding";
+      case "coding":
+        return "coding";
 
-   case "pdf":
-    return "pdf";
+      case "pdf":
+        return "pdf";
 
-    case "ppt":
-    return "ppt";
+      case "ppt":
+        return "ppt";
 
-    case "image":
-    return "image";
+      case "image":
+        return "image";
 
-    case "vision":
-    return "vision";
-    case "pdf_rag":
-    return "pdf_rag";
+      case "vision":
+        return "vision";
+      case "pdf_rag":
+        return "pdf_rag";
 
-   default:
-    return "chat";
+      default:
+        return "chat";
+
+    }
+
+  },
+
+  {
+
+    chat: "chat",
+
+    search: "search",
+
+    coding: "coding",
+
+    pdf: "pdf",
+    ppt: "ppt",
+    image: "image",
+    vision: "vision",
+    pdf_rag: "pdf_rag"
 
   }
-
- },
-
- {
-
-  chat:"chat",
-
-  search:"search",
-
-  coding:"coding",
-
-  pdf:"pdf",
-   ppt:"ppt",
-   image:"image",
-   vision:"vision",
-   pdf_rag:"pdf_rag"
-
- }
 
 );
 
@@ -169,14 +169,14 @@ workflow.addEdge(
 );
 
 workflow.addEdge(
-    "vision",
-    "__end__"
+  "vision",
+  "__end__"
 );
 
 workflow.addEdge(
-    "pdf_rag",
-    "__end__"
+  "pdf_rag",
+  "__end__"
 );
 
 export const graph =
-workflow.compile();
+  workflow.compile();

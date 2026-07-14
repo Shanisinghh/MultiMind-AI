@@ -9,17 +9,17 @@ import { deductCredits } from "../utils/deductCredits.js";
 export const pdfAgent = async (state) => {
 
   try {
-await checkAgentLimit(
-    state.userId,
-    "pdf"
-  );
- await deductCredits(
+    await checkAgentLimit(
+      state.userId,
+      "pdf"
+    );
+    await deductCredits(
 
-        state.userId,
+      state.userId,
 
-        "pdf"
+      "pdf"
 
-    );  
+    );
     const llm =
       getModel("pdf");
 
@@ -171,14 +171,14 @@ Rules:
     const downloadUrl =
       await getDownloadUrl(
         fileName,
-        24*60*60
+        24 * 60 * 60
       );
 
     return {
 
       ...state,
 
-response: `
+      response: `
 # ✅ PDF Generated Successfully
 
 📄 **${generatedTitle}**

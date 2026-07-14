@@ -30,7 +30,7 @@ export const searchAgent =
 
       return {
         ...state,
-        searchResults:results,
+        searchResults: results,
       };
 
     } catch (error) {

@@ -10,15 +10,15 @@ export const imageAgent = async (state) => {
 
   try {
 
-await checkAgentLimit(
-    state.userId,
-    "image"
-  );
- await deductCredits(
+    await checkAgentLimit(
+      state.userId,
+      "image"
+    );
+    await deductCredits(
 
-        state.userId,
+      state.userId,
 
-        "image"
+      "image"
 
     );
 
@@ -89,14 +89,14 @@ ${state.prompt}
     const downloadUrl =
       await getDownloadUrl(
         fileName,
-        24*60*60
+        24 * 60 * 60
       );
 
     return {
 
       ...state,
 
-     response: `
+      response: `
 # 🖼️ Image Generated Successfully
 
 ![Generated Image](${downloadUrl})

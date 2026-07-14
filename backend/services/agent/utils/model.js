@@ -7,7 +7,7 @@ import { ChatOpenRouter } from "@langchain/openrouter";
 
 const openRouter = new ChatOpenRouter({
   model: "deepseek/deepseek-chat",
-  temperature: 0,
+  temperature: 0.7,
   maxTokens:2500
   // other params...
 });
@@ -21,7 +21,7 @@ export const gemini =
 
 const groq = new ChatGroq({
   model: "llama-3.3-70b-versatile",
-  temperature: 0,
+  temperature: 0.7,
   maxTokens: undefined,
   maxRetries: 2,
   // other params...

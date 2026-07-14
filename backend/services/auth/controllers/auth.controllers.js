@@ -295,124 +295,124 @@ export const updatePlan = async (req, res) => {
 
 export const deductCredits = async (req, res) => {
 
-    try {
+  try {
 
-        const {
+    const {
 
-            userId,
+      userId,
 
-            agent
+      agent
 
-        } = req.body;
+    } = req.body;
 
-        const COST = {
+    const COST = {
 
-             chat:1,
+      chat: 1,
 
-  search:5,
+      search: 5,
 
-  coding:10,
+      coding: 10,
 
-  pdf:10,
+      pdf: 10,
 
-  ppt:10,
+      ppt: 10,
 
-  image:10
+      image: 10
 
-        };
+    };
 
-        const user = await User.findById(userId);
+    const user = await User.findById(userId);
 
-        if(!user){
+    if (!user) {
 
-            return res.status(404).json({
+      return res.status(404).json({
 
-                success:false,
+        success: false,
 
-                message:"User not found"
+        message: "User not found"
 
-            });
-
-        }
-
-        const requiredCredits =
-        COST[agent] || 1;
-
-        if(user.credits < requiredCredits){
-
-            return res.status(400).json({
-
-                success:false,
-
-                message:"Not enough credits."
-
-            });
-
-        }
-
-        user.credits -= requiredCredits;
-
-        await user.save();
-
-        const sessionId =
-        await redis.get(
-            `user-session:${user._id}`
-        );
-
-        if(sessionId){
-
-            await redis.set(
-
-                `session:${sessionId}`,
-
-                JSON.stringify({
-
-                    userId:user._id,
-
-                    email:user.email,
-
-                    avatar:user.avatar,
-
-                    name:user.name,
-
-                    plan:user.plan,
-
-                    credits:user.credits,
-
-                    totalCredits:user.totalCredits
-
-                }),
-
-                "EX",
-
-                60*60*24*7
-
-            );
-
-        }
-
-        return res.json({
-
-            success:true,
-
-            credits:user.credits
-
-        });
+      });
 
     }
 
-    catch(error){
+    const requiredCredits =
+      COST[agent] || 1;
 
-        console.log(error);
-          console.log(error)
-        return res.status(500).json({
+    if (user.credits < requiredCredits) {
 
-            success:false,
+      return res.status(400).json({
 
-            message:error.message
+        success: false,
 
-        });
+        message: "Not enough credits."
+
+      });
 
     }
+
+    user.credits -= requiredCredits;
+
+    await user.save();
+
+    const sessionId =
+      await redis.get(
+        `user-session:${user._id}`
+      );
+
+    if (sessionId) {
+
+      await redis.set(
+
+        `session:${sessionId}`,
+
+        JSON.stringify({
+
+          userId: user._id,
+
+          email: user.email,
+
+          avatar: user.avatar,
+
+          name: user.name,
+
+          plan: user.plan,
+
+          credits: user.credits,
+
+          totalCredits: user.totalCredits
+
+        }),
+
+        "EX",
+
+        60 * 60 * 24 * 7
+
+      );
+
+    }
+
+    return res.json({
+
+      success: true,
+
+      credits: user.credits
+
+    });
+
+  }
+
+  catch (error) {
+
+    console.log(error);
+    console.log(error)
+    return res.status(500).json({
+
+      success: false,
+
+      message: error.message
+
+    });
+
+  }
 
 };

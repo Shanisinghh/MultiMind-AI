@@ -48,7 +48,7 @@ function Home() {
               onClick={handleGoogleLogin}
               className="w-full flex items-center justify-center gap-3 py-[11px] rounded-xl text-sm font-medium text-white bg-gradient-to-br from-yellow-500 to-yellow-700 hover:from-yellow-400 hover:to-yellow-600 active:from-yellow-600 active:to-yellow-800 border border-yellow-500/30 shadow-lg shadow-yellow-500/20 hover:shadow-yellow-500/30 transition-all duration-150 cursor-pointer"
             >
-              <FaGoogle size={15} className="text-white" />
+              <FaGoogle size={19} className="text-white" />
               Continue with Google
             </button>
           </div>

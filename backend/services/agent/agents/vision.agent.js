@@ -103,9 +103,9 @@ Rules:
 
   finally {
 
-    if(state.file){
+    if (state.file) {
 
-      try{
+      try {
 
         await fs.unlink(
           state.file.path
@@ -118,7 +118,7 @@ Rules:
 
       }
 
-      catch(err){
+      catch (err) {
 
         console.log(
           err.message

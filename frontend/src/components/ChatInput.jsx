@@ -314,6 +314,12 @@ export default function ChatInput({ setBanner }) {
         <textarea
           value={value}
           onChange={(e) => setValue(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              handleSend();
+            }
+          }}
           placeholder={placeholders[selectedAgent]}
           rows={2}
           disabled={isLoading}

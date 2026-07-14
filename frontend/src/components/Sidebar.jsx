@@ -95,10 +95,12 @@ export default function Sidebar() {
 
   const isCollapsed = collapsed;
 
- async function handleDeleteConversation(conversationId) {
+  async function handleDeleteConversation(conversationId) {
     console.log("Deleting conversation with ID:", conversationId);
     try {
-     const response = await api.delete(`/api/chat/delete-conversation/${conversationId}`);
+      const response = await api.delete(
+        `/api/chat/delete-conversation/${conversationId}`,
+      );
       dispatch(
         setConversations(
           conversations.filter((conv) => conv._id !== conversationId),

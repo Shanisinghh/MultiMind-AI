@@ -1,5 +1,5 @@
 import fs from "fs";
-import {PDFParse} from "pdf-parse";
+import { PDFParse } from "pdf-parse";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { createVectorStore } from "../utils/vectorStore.js";
 import {
@@ -8,7 +8,7 @@ import {
 } from "@langchain/core/messages";
 
 import { getModel }
-from "../utils/model.js";
+  from "../utils/model.js";
 import { QdrantVectorStore } from "@langchain/qdrant";
 export const pdfRagAgent = async (state) => {
 
@@ -48,37 +48,37 @@ export const pdfRagAgent = async (state) => {
 
       ]);
 
-   const collectionName =
-`pdf-${Date.now()}`;
+    const collectionName =
+      `pdf-${Date.now()}`;
 
-const vectorStore =await createVectorStore(
+    const vectorStore = await createVectorStore(
 
-collectionName,
+      collectionName,
 
-docs
+      docs
 
-);
+    );
 
-const relevantDocs =
-await vectorStore.similaritySearch(
+    const relevantDocs =
+      await vectorStore.similaritySearch(
 
-    state.prompt,
+        state.prompt,
 
-    5
+        5
 
-);
-console.log(relevantDocs);
-const context =
-relevantDocs
+      );
+    console.log(relevantDocs);
+    const context =
+      relevantDocs
 
-.map(doc=>doc.pageContent)
+        .map(doc => doc.pageContent)
 
-.join("\n\n");
-const llm =getModel("pdf-rag");
+        .join("\n\n");
+    const llm = getModel("pdf-rag");
 
-    const messages=[
+    const messages = [
 
-new SystemMessage(`
+      new SystemMessage(`
 
 You are MultiMindAI PDF Assistant.
 
@@ -96,7 +96,7 @@ Rules:
 
 `),
 
-new HumanMessage(`
+      new HumanMessage(`
 
 Context:
 
@@ -107,13 +107,13 @@ Question:
 ${state.prompt}
 
 `)
-];
+    ];
 
 
-const response =
-await llm.invoke(
-    messages
-);
+    const response =
+      await llm.invoke(
+        messages
+      );
 
 
     return {
@@ -123,37 +123,37 @@ await llm.invoke(
       docs,
 
       response:
-response.content
+        response.content
     };
 
-    
+
 
 
 
   }
 
- finally{
+  finally {
 
-    try{
+    try {
 
-        fs.unlinkSync(
-            state.file.path
-        );
+      fs.unlinkSync(
+        state.file.path
+      );
 
-        await QdrantVectorStore.deleteCollection(
+      await QdrantVectorStore.deleteCollection(
 
-            collectionName
+        collectionName
 
-        );
-
-    }
-
-    catch(err){
-
-        console.log(err.message);
+      );
 
     }
 
-}
+    catch (err) {
+
+      console.log(err.message);
+
+    }
+
+  }
 
 };
